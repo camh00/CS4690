@@ -16,6 +16,11 @@ module.exports = class DBWrapper
         this.dbJsonData = dbJsonData;
     }
 
+    getCourses()
+    {
+        return this.dbJsonData.courses;
+    }
+
     getLogs()
     {
         return this.dbJsonData.logs;
