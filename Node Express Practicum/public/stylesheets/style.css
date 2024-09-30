@@ -1,0 +1,13 @@
+/* TODO: make it look awesome. */
+/* TODO: make it responsive. */
+body {
+  background-color: rgb(56, 56, 56);
+  color: white;
+}
+input {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
