@@ -1,5 +1,6 @@
-const dbJsonFileNameFromJavaScriptFilesPerspective = '../db.json'
-const dbJsonData = require(dbJsonFileNameFromJavaScriptFilesPerspective);
+var path = require('path');
+const dbJsonFileName = path.join(__dirname, '../public/db/db.json');
+const dbJsonData = require(dbJsonFileName);
 
 const dbJsonFileNameFromNodeFSPerspective = 'db.json'
 const fs = require("fs");
