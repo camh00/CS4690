@@ -2,10 +2,10 @@
 // DONE: Wire up the app's behavior here.
 // NOTE: The TODOs are listed in index.html
 
-"use strict";
+'use strict';
 // Populate course selections
-const courseUrl =
-  '/api/v1/courses';
+const courseUrl = '/api/v1/courses';
+const logUrl = '/api/v1/logs';
 
 fetch(courseUrl)
   .then((response) => response.json())
@@ -48,12 +48,7 @@ function checkLogs(uvuID) {
       document.getElementById('course').selectedIndex
     ].id;
   if (uvuID.length == 8) {
-    fetch(
-      '/api/v1/logs?courseId=' +
-        courseID +
-        '&uvuId=' +
-        uvuID
-    )
+    fetch(logUrl + '?courseId=' + courseID + '&uvuId=' + uvuID)
       .then((response) => response.json())
       .then((logs) => {
         console.log(logs);
@@ -119,7 +114,6 @@ function disableButton() {
 
 // PUT new log into db
 function submitLog() {
-
   const data = {
     courseId:
       document.getElementById('course').options[
@@ -128,16 +122,13 @@ function submitLog() {
     uvuId: document.getElementById('uvuId').value,
     text: document.getElementById('logTextArea').value,
   };
-  fetch(
-    '/api/v1/logs',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    }
-  )
+  fetch(logUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
     .then((response) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
