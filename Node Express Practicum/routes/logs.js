@@ -8,7 +8,18 @@ const db = new DBWrapper();
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   console.log("logs/  GET");
-  res.send(db.getLogs());
+  const { courseId, uvuId } = req.query;
+  let logs = db.getLogs();
+
+  if (courseId) {
+    logs = logs.filter(log => log.courseId === courseId);
+  }
+
+  if (uvuId) {
+    logs = logs.filter(log => log.uvuId === uvuId);
+  }
+
+  res.send(logs);
 });
 
 router.post('/', function(req, res, next) {

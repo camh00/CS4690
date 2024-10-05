@@ -1,19 +1,18 @@
-// const { 
-//     v4: Guid,
-//   } = require('uuid');
-  
-  module.exports = class Log
-{
-    courseId = null;
-    uvuId = null;
-    date = new Date().toLocaleString();
-    text = null;
-    id = Guid();
-
-    constructor(courseId, uvuId, msg)
-    {
-        this.courseId = courseId;
-        this.uvuId = uvuId;
-        this.text = msg;
-    }
+class Log {
+  constructor(courseId, uvuId, text) {
+    this.courseId = courseId;
+    this.uvuId = uvuId;
+    this.text = text;
+    this.date = new Date().toLocaleString('en-US', {
+      month: 'numeric',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    });
+  }
 }
+
+module.exports = Log;

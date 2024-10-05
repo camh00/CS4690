@@ -56,25 +56,33 @@ function checkLogs(uvuID) {
       .then((response) => response.json())
       .then((logs) => {
         console.log(logs);
-        const logsList = $('#logsList');
-        for (let i = 0; i < logs.length; i++) {
+        if (logs.length === 0) {
           let li = document.createElement('li');
-
-          let div = document.createElement('div');
-          let small = document.createElement('small');
-          small.textContent = logs[i]['date'];
-          div.appendChild(small);
-
-          let pre = document.createElement('pre');
           let p = document.createElement('p');
-          p.id = 'logData';
-          p.textContent = logs[i]['text'];
-          pre.appendChild(p);
-
-          li.appendChild(div);
-          li.appendChild(pre);
-
+          p.textContent = 'No logs found';
+          li.appendChild(p);
           document.getElementById('logs').appendChild(li);
+        } else {
+          const logsList = $('#logsList');
+          for (let i = 0; i < logs.length; i++) {
+            let li = document.createElement('li');
+
+            let div = document.createElement('div');
+            let small = document.createElement('small');
+            small.textContent = logs[i]['date'];
+            div.appendChild(small);
+
+            let pre = document.createElement('pre');
+            let p = document.createElement('p');
+            p.id = 'logData';
+            p.textContent = logs[i]['text'];
+            pre.appendChild(p);
+
+            li.appendChild(div);
+            li.appendChild(pre);
+
+            document.getElementById('logs').appendChild(li);
+          }
         }
       })
       .catch((err) => console.log(err));
@@ -99,7 +107,7 @@ function hideLogs() {
 // disable submit button until all forms are filled in
 function disableButton() {
   if (
-    document.getElementById('logs').childElementCount === 0 ||
+    document.getElementById('uvuId').value.length < 8 ||
     document.getElementById('logTextArea').value === ''
   ) {
     document.getElementById('submit').disabled = true;
@@ -110,6 +118,7 @@ function disableButton() {
 
 // PUT new log into db
 function submitLog() {
+
   const data = {
     courseId:
       document.getElementById('course').options[
@@ -132,10 +141,13 @@ function submitLog() {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      return response.json(); // Parse the response as JSON
+      return response.json();
     })
     .then((result) => {
       console.log('Success:', result);
+      alert('Log submitted successfully!');
+      document.getElementById('logTextArea').value = '';
+      checkLogs(document.getElementById('uvuId').value);
     })
     .catch((error) => {
       console.eror('Error:', error);

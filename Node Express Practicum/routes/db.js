@@ -6,8 +6,6 @@ const dbJsonFileNameFromNodeFSPerspective = 'db.json'
 const fs = require("fs");
 Log = require("../models/log");
 
-console.log(dbJsonData);
-
 module.exports = class DBWrapper
 {    
     dbJsonData = null;
@@ -36,10 +34,9 @@ module.exports = class DBWrapper
     save()
     {
         const newJson = JSON.stringify(this.dbJsonData);
-        console.log("writting:  " + newJson);
-        console.log("to file: " + dbJsonFileNameFromNodeFSPerspective);
+        console.log("writting to file: " + dbJsonFileNameFromNodeFSPerspective);
 
-        fs.writeFile(dbJsonFileNameFromNodeFSPerspective, newJson, err => {
+        fs.writeFile(dbJsonFileName, newJson, err => {
             if (err) {
                 console.error(err);
             } else {
