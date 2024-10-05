@@ -2,6 +2,7 @@
 // DONE: Wire up the app's behavior here.
 // NOTE: The TODOs are listed in index.html
 
+"use strict";
 // Populate course selections
 const courseUrl =
   '/api/v1/courses';
