@@ -1,47 +1,90 @@
-var path = require('path');
-const dbJsonFileName = path.join(__dirname, '../public/db/db.json');
-const dbJsonData = require(dbJsonFileName);
-
-const dbJsonFileNameFromNodeFSPerspective = 'db.json'
 const fs = require("fs");
+const { connect } = require("http2");
 Log = require("../models/log");
+Course = require("../models/courses");
+
+const mongoose = require('mongoose');
+
+connection = mongoose.connect('mongodb+srv://chancock:yPF2UssGDKt40v@cs4690.4o3ur.mongodb.net/?retryWrites=true&w=majority&appName=CS4690').
+    then(
+        () => { console.log('Connected!'); },
+        err => { console.log('Err: ' + err); }
+    );
+
+const LogSchema = mongoose.Schema(
+    {
+        courseId : { type: String, required : true },
+        uvuId : { type: Number, required : true },
+        date : Date,
+        text : { type: String, required : true },
+        id : mongoose.Schema.ObjectId
+    });
+
+const CourseSchema = mongoose.Schema(
+    {
+        id : { type: String, required : true },
+        text : { type: String, required : true },
+    });
+
+const LogModel = mongoose.model("logs", LogSchema);
+const CourseModel = mongoose.model("courses", CourseSchema);
 
 module.exports = class DBWrapper
 {    
-    dbJsonData = null;
-
     constructor()
     {
-        this.dbJsonData = dbJsonData;
     }
 
-    getCourses()
+    async getCourses()
     {
-        return this.dbJsonData.courses;
+        // using exec
+        const courses = await CourseModel.find().exec();
+        console.log(courses);
+        return courses;
     }
 
-    getLogs()
+    // option 1, using exec, preferred
+    // note: you only need to use cursor or exec, but not both
+    async getLogs()
     {
-        return this.dbJsonData.logs;
+        // using exec
+        const logs = await LogModel.find().exec();
+        return logs;
     }
 
-    addLog(log)
+    /*
+    // option 2, using cursor
+    // note: you only need to use cursor or exec, but not both
+    async getLogs()
     {
-        this.dbJsonData.logs.push(log);
-        this.save()
+        const logs = [];
+        const cursor = await LogModel.find().cursor();
+        for await (const log of cursor) {
+            // Process each document
+            console.log("db log:  " + log);
+            logs.push(log);
+        }
+
+        console.log("Logs:  " + logs);
+        return logs;
+    }
+    */
+
+    async addLog(log)
+    {
+        const mongoDBLog = new LogModel(log);
+
+        await mongoDBLog.save();
+
+        console.log("mongoDBLog:" + mongoDBLog)
+
+        log._id = mongoDBLog._id;
+        return log;
     }
 
-    save()
+    async deleteLog(_id)
     {
-        const newJson = JSON.stringify(this.dbJsonData);
-        console.log("writting to file: " + dbJsonFileNameFromNodeFSPerspective);
-
-        fs.writeFile(dbJsonFileName, newJson, err => {
-            if (err) {
-                console.error(err);
-            } else {
-                console.log("updated: " + dbJsonFileNameFromNodeFSPerspective)
-            }
-        });
+        const result = await LogModel.findByIdAndDelete(_id);
+        return result;
     }
 }
