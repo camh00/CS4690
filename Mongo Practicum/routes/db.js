@@ -5,7 +5,7 @@ Course = require("../models/courses");
 
 const mongoose = require('mongoose');
 
-connection = mongoose.connect('mongodb+srv://chancock:yPF2UssGDKt40v@cs4690.4o3ur.mongodb.net/?retryWrites=true&w=majority&appName=CS4690').
+connection = mongoose.connect('mongodb+srv://chancock:yPF2UssGDKt40v@cs4690.4o3ur.mongodb.net/CS4690?retryWrites=true&w=majority&appName=CS4690').
     then(
         () => { console.log('Connected!'); },
         err => { console.log('Err: ' + err); }
@@ -44,10 +44,11 @@ module.exports = class DBWrapper
     async getCourses()
     {
         const collections = await CollectionModel.find().exec();
-        console.log(collections);
-        return collections;
+        const coursesArray = collections.map(course => course.courses);
+        return coursesArray[0];
         // using exec
         // const courses = await CourseModel.find().exec();
+        // const coursesArray = courses.map(course => course.courses);
         // console.log(courses);
         // return courses;
     }

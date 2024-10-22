@@ -6,9 +6,10 @@ Log = require("../models/courses");
 const db = new DBWrapper();
 
 /* GET courses listing. */
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
   console.log("GET /api/v1/courses");
-  res.send(db.getCourses());
+  const courses = await db.getCourses();
+  res.send(courses);
 });
 
 

@@ -1,13 +1,12 @@
 const mongoose = require('mongoose');
- 
- module.exports = class Course
-{
-    id = null;
-    display = null;
 
-    constructor(id, display)
-    {
-        this.id = id;
-        this.display = display;
-    }
-}
+// Define the Course schema
+const courseSchema = new mongoose.Schema({
+  id: { type: String, required: true },
+  display: { type: String, required: true }
+});
+
+// Create the Course model
+const CourseModel = mongoose.model('Course', courseSchema);
+
+module.exports = CourseModel;

@@ -6,10 +6,10 @@ Log = require("../models/log");
 const db = new DBWrapper();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
   console.log("logs/  GET");
   const { courseId, uvuId } = req.query;
-  let logs = db.getLogs();
+  let logs = await db.getLogs();
 
   if (courseId) {
     logs = logs.filter(log => log.courseId === courseId);
@@ -22,7 +22,7 @@ router.get('/', function(req, res, next) {
   res.send(logs);
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', async function(req, res, next) {
   console.log("logs/  POST " + req.body);
   const log = new Log(req.body.courseId, req.body.uvuId, req.body.text);
   db.addLog(log);
