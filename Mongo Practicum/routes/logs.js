@@ -10,7 +10,6 @@ router.get('/', async function(req, res, next) {
   console.log("logs/  GET");
   const { courseId, uvuId } = req.query;
   let logs = await db.getLogs();
-
   if (courseId) {
     logs = logs.filter(log => log.courseId === courseId);
   }

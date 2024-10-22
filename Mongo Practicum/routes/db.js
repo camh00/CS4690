@@ -29,11 +29,14 @@ const CourseSchema = mongoose.Schema(
 const CollectionSchema = mongoose.Schema({
     courses: { type: Array, required: true },
 });
+const TestLogSchema = mongoose.Schema({
+    logs: { type: Array, required: true },
+});
 
-const LogModel = mongoose.model("logs", LogSchema);
+// const LogModel = mongoose.model("logs", LogSchema);
 // const CourseModel = mongoose.model("courses", CourseSchema);
 const CollectionModel = mongoose.model('courses', CollectionSchema);
-
+const TestLogModel = mongoose.model('logs', TestLogSchema);
 
 module.exports = class DBWrapper
 {    
@@ -58,8 +61,9 @@ module.exports = class DBWrapper
     async getLogs()
     {
         // using exec
-        const logs = await LogModel.find().exec();
-        return logs;
+        const logs = await TestLogModel.find().exec();
+        const logsArray = logs.map(logs => logs.logs);
+        return logsArray[0];
     }
 
     /*
