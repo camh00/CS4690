@@ -66,6 +66,7 @@ module.exports = class DBWrapper
         return logsArray[0];
     }
 
+
     /*
     // option 2, using cursor
     // note: you only need to use cursor or exec, but not both
@@ -84,16 +85,41 @@ module.exports = class DBWrapper
     }
     */
 
-    async addLog(log)
-    {
-        const mongoDBLog = new LogModel(log);
+    // async addLog(log)
+    // {
+    //     const mongoDBLog = new LogModel(log);
 
-        await mongoDBLog.save();
+    //     await mongoDBLog.save();
 
-        console.log("mongoDBLog:" + mongoDBLog)
+    //     console.log("mongoDBLog:" + mongoDBLog)
 
-        log._id = mongoDBLog._id;
-        return log;
+    //     log._id = mongoDBLog._id;
+    //     return log;
+    // }
+    async addLog(log) {
+        try {
+            // Find the document containing the logs array
+            const document = await TestLogModel.findOne().exec();
+            
+            if (document) {
+                // Append the new log to the logs array
+                document.logs.push(log);
+                
+                // Save the updated document
+                await document.save();
+                console.log("Updated document with new log:", document);
+                return log;
+            } /* else {
+                // If no document exists, create a new one with the log
+                const newDocument = new TestLogModel({ logs: [log] });
+                await newDocument.save();
+                console.log("Created new document with log:", newDocument);
+                return log;
+            }*/
+        } catch (err) {
+            console.error('Error adding log:', err);
+            throw err;
+        }
     }
 
     async deleteLog(_id)
