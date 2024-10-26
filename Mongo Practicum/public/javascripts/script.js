@@ -7,18 +7,20 @@
 const courseUrl = '/api/v1/courses';
 const logUrl = '/api/v1/logs';
 
-fetch(courseUrl)
-  .then((response) => response.json())
-  .then((crses) => {
-    for (let i = 0; i < crses.length; i++) {
-      let optionContent = crses[i]['display'];
-      let el = document.createElement('option');
-      el.textContent = optionContent;
-      el.id = crses[i]['id'];
-      document.getElementById('course').appendChild(el);
-    }
-  })
-  .catch((err) => console.log(err));
+function fetchCourses() {
+  fetch(courseUrl)
+    .then((response) => response.json())
+    .then((crses) => {
+      for (let i = 0; i < crses.length; i++) {
+        let optionContent = crses[i]['display'];
+        let el = document.createElement('option');
+        el.textContent = optionContent;
+        el.id = crses[i]['id'];
+        document.getElementById('course').appendChild(el);
+      }
+    })
+    .catch((err) => console.log(err));
+}
 
 // Hide id field until a course has been selected
 function displayIdField() {
@@ -145,3 +147,60 @@ function submitLog() {
       console.eror('Error:', error);
     });
 }
+
+// Function to add a new course
+function addCourse() {
+  const courseName = document.getElementById('courseName').value.trim();
+
+  // Check if courseName is empty
+  if (!courseName) {
+    alert('Course name cannot be empty');
+    return;
+  }
+
+  // Fetch existing courses
+  fetch(courseUrl)
+    .then((response) => response.json())
+    .then((courses) => {
+      // Check if courseName already exists
+      const courseExists = courses.some(course => course.display === courseName);
+      if (courseExists) {
+        alert('Course already exists');
+        return;
+      }
+
+      // Send POST request to add the course
+      const data = { id: courseName.toLowerCase().replace(/\s+/g, ''), display: courseName };
+      fetch(courseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((result) => {
+          console.log('Success:', result);
+          alert('Course added successfully!');
+          document.getElementById('courseName').value = '';
+          // Optionally, refresh the course list
+          fetchCourses();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    })
+    .catch((error) => {
+      console.error('Error fetching courses:', error);
+    });
+}
+fetchCourses();
+// Add event listener to the button
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.getElementById('addCourse').addEventListener('click', addCourse);
+});

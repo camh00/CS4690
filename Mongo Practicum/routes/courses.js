@@ -12,5 +12,15 @@ router.get('/', async function(req, res, next) {
   res.send(courses);
 });
 
+router.post('/', async function(req, res, next) {
+  console.log("courses/  POST " + req.body);
+  const course = new Course({
+    id: req.body.id,
+    display: req.body.display
+  });
+  db.addCourse(course);
+
+  res.send(JSON.stringify(course));
+});
 
 module.exports = router;

@@ -4,7 +4,7 @@ body {
   background-color: rgb(56, 56, 56);
   color: white;
 }
-input {
+#uvuId {
   display: none;
 }
 form {
@@ -33,4 +33,8 @@ p, small {
 
 .hidden {
   display: none;
+}
+
+#courseName {
+  margin-bottom: 10px;
 }

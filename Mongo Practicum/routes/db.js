@@ -5,7 +5,7 @@ Course = require("../models/courses");
 
 const mongoose = require('mongoose');
 
-connection = mongoose.connect('mongodb+srv://chancock:yPF2UssGDKt40v@cs4690.4o3ur.mongodb.net/CS4690?retryWrites=true&w=majority&appName=CS4690').
+connection = mongoose.connect('mongodb+srv://' + process.env.UNAME + ':' + process.env.PWORD + '@cs4690.4o3ur.mongodb.net/CS4690?retryWrites=true&w=majority&appName=CS4690').
     then(
         () => { console.log('Connected!'); },
         err => { console.log('Err: ' + err); }
@@ -54,6 +54,33 @@ module.exports = class DBWrapper
         // const coursesArray = courses.map(course => course.courses);
         // console.log(courses);
         // return courses;
+    }
+
+    async addCourse(course)
+    {
+        try {
+            // Find the document containing the courses array
+            const document = await CollectionModel.findOne().exec();
+            
+            if (document) {
+                // Append the new course to the courses array
+                document.courses.push(course);
+                
+                // Save the updated document
+                await document.save();
+                console.log("Updated document with new course:", document);
+                return course;
+            } /* else {
+                // If no document exists, create a new one with the course
+                const newDocument = new CollectionModel({ courses: [course] });
+                await newDocument.save();
+                console.log("Created new document with course:", newDocument);
+                return course;
+            } */
+        } catch (err) {
+            console.error('Error adding course:', err);
+            throw err;
+        }
     }
 
     // option 1, using exec, preferred

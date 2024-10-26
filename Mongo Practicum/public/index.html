@@ -18,6 +18,7 @@
   </head>
   <body>
     <form>
+      <h1>Student Logs</h1>
       <select
         aria-label="Select Course"
         id="course"
@@ -63,6 +64,24 @@
         onclick="submitLog();"
       >
         Add Log
+      </button>
+      <br>
+      <h1>Add a Course</h1>
+      <label for="courseName">Course Name</label><br />
+      <input
+        type="text"
+        id="courseName"
+        name="courseName"
+        data-cy="course_input"
+        maxlength="8"
+        placeholder="CS 1234"
+      />
+      <button
+        type="button"
+        id="addCourse"
+        data-cy="add_course_btn"
+        >
+        Add Course
       </button>
     </form>
   </body>
