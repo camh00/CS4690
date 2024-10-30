@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node --experimental-modules app.mjs"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -12,6 +12,14 @@
     "http-errors": "~1.6.3",
     "jade": "^0.29.0",
     "morgan": "~1.9.1",
-    "websocket": "^1.0.35"
+    "serve-handler": "^6.1.6",
+    "uuid": "^11.0.2",
+    "websocket": "^1.0.35",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.25.9",
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0"
   }
 }
