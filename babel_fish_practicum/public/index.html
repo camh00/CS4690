@@ -1,0 +1,47 @@
+><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Babel Fish</title>
+
+    <meta charset="UTF-8" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico"
+    />
+
+    <link rel="stylesheet" href="stylesheets/style.css" />
+    <script src="javascripts/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <button id="recordButton">Record Speech</button>
+    <div id="transcript"></div>
+
+    <script>
+        const recordButton = document.getElementById('recordButton');
+        const transcriptDiv = document.getElementById('transcript');
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            transcriptDiv.textContent = transcript;
+        };
+
+        recordButton.addEventListener('click', () => {
+            recognition.start();
+        });
+    </script>
+    
+</body>
+<noscript>
+    <style type="text/css">
+        form {display:none;}
+    </style>
+    <div class="noscriptmsg">JavaScript is disabled. Please enable JavaScript.</div>
+  </noscript>
+</html>
