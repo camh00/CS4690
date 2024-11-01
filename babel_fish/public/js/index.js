@@ -1,4 +1,4 @@
-
+'use strict';
 const ws = new WebSocket(`ws://${window.document.location.host}`);
 // Log socket opening and closing
 ws.addEventListener("open", event => {
