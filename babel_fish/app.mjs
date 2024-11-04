@@ -3,6 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 import staticHandler from 'serve-handler';
 import ws, { WebSocketServer } from 'ws';
 const port = process.argv[2] || 8888;
+import dotenv from 'dotenv';
+dotenv.config();
+const API_KEY = process.env.API_KEY;
 
 //serve static folder
 const server = createServer((req, res) => {   // (1)
@@ -127,7 +130,7 @@ wss.on('connection', (client) => {
                 };
                 console.log(`reqData: ${reqData}`)
 
-                const response = await fetch("https://translation.googleapis.com/language/translate/v2?key=AIzaSyB0ShVh22XkE7mPF25azJKwlbuyyjqn4vk", reqData);
+                const response = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`, reqData);
 
                 const respData = await response.json();
 
