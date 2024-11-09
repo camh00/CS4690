@@ -7,8 +7,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 const API_KEY = process.env.API_KEY;
 
-//serve static folder
-const server = createServer((req, res) => {   // (1)
+//server static folder
+const server = createServer((req, res) => { // (1)
     return staticHandler(req, res, { public: 'public' })
 });
 const wss = new WebSocketServer({ server }) // (2)
@@ -20,48 +20,20 @@ const langs_to_translate = []
 
 ** login-type message **
 // Sample Requests:
-// req 1
 {
     "msg_type": "login",
     "lang": "en",
     "user": "Little Bobby Tables"
 }
 
-// req 2
-{
-    "msg_type": "login",
-    "lang": "es",
-    "user": "Inigo Montoya"
-}
-
-// req 3
-{
-    "msg_type": "login",
-    "lang": "fj",
-    "user": "Beach Comber"
-}
-
 // Sample Response:
-// req 1's resp
 {
     "user": "Little Bobby Tables",
     "action": "login"
 }
 
-// req 2's resp
-{
-    "user": "Inigo Montoya",
-    "action": "login"
-}
-// req 3's resp
-{
-    "user": "Beach Comber",
-    "action": "login"
-}
-
 ** Send message  **
 // Sample Request
-// req 1
 {
     "msg_type": "msg",
     "msg": "Have a nice day!",
@@ -71,25 +43,10 @@ const langs_to_translate = []
 }
 
 // Sample Responses
-// req 1's resp to Little Bobby Tables
 {
     "user": "Little Bobby Tables",
     "action": "send_message",
     "msg": "Have a nice day!"
-}
-
-// req 1's resp to Inigo Montoya
-{
-    "user": "Little Bobby Tables",
-    "action": "send_message",
-    "msg": "¡Que tenga un lindo día!"
-}
-
-// req 1's resp to Beach Comber
-{
-    "user": "Little Bobby Tables",
-    "action": "send_message",
-    "msg": "Marautaka na siga!"
 }
 */
 
@@ -100,7 +57,7 @@ wss.on('connection', (client) => {
     const clientUuid = uuidv4();
     client._socket._uuid = clientUuid;
 
-    client.on('message', async (msg) => {    // (3)
+    client.on('message', async (msg) => { // (3)
         console.log(`Received Message: ${msg}`);
         const msgData = JSON.parse(msg);
         if (msgData.msg_type == "login")
@@ -121,9 +78,6 @@ wss.on('connection', (client) => {
 
             for await (const langCode of langs_to_translate) {
                 // translate into lang using google translate
-                // todo... translate message into required langs
-                // https://translation.googleapis.com/language/translate/v2?key=AIzaSyDdDpwBK_ssJRH9-hqRkhHqzSA0fzg8tvc
-                // 
                 const reqData = {
                     method: "POST",
                     body: JSON.stringify({ "q": msg, "target": langCode }),
@@ -151,7 +105,7 @@ wss.on('connection', (client) => {
     })
 });
 
-function broadcast(msgData) {       // (4)
+function broadcast(msgData) { // (4)
     for (const client of wss.clients) {
         if (client.readyState === ws.OPEN) {
             let respObj = null; 

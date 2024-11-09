@@ -24,30 +24,34 @@ document.addEventListener('DOMContentLoaded', () => {
     speakButton.addEventListener('click', () => {
         const messageText = translation.textContent;
         if (messageText) {
+            // Stop any ongoing speech synthesis
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+            }
             const message = new SpeechSynthesisUtterance(messageText);
             window.speechSynthesis.speak(message);
         } else {
             console.error('No text to speak');
         }
     });
-});
-// Translation
-const translateButton = document.getElementById('translateButton');
-const translationDiv = document.getElementById('translation');
 
-translateButton.addEventListener('click', async () => {
+    // Translation
+    const translateButton = document.getElementById('translateButton');
+    const translationDiv = document.getElementById('translation');
 
-    const response = await fetch("https://translation.googleapis.com/language/translate/v2?key=AIzaSyDdDpwBK_ssJRH9-hqRkhHqzSA0fzg8tvc", {
-        method: "POST",
-        body: JSON.stringify({ "q": transcriptDiv.textContent, "target": "es" }),
+    translateButton.addEventListener('click', async () => {
+
+        const response = await fetch("https://translation.googleapis.com/language/translate/v2?key=AIzaSyDdDpwBK_ssJRH9-hqRkhHqzSA0fzg8tvc", {
+            method: "POST",
+            body: JSON.stringify({ "q": transcriptDiv.textContent, "target": "es" }),
+        });
+
+        const respData = await response.json();
+        console.log(respData.data.translations);
+        const translatedMessage = respData.data.translations[0].translatedText;
+        translationDiv.textContent = translatedMessage;
     });
-
-    const respData = await response.json();
-    console.log(respData.data.translations);
-    const translatedMessage = respData.data.translations[0].translatedText;
-    translationDiv.textContent = translatedMessage;
-}
-);
+});
 
 // Websockets
 const ws = new WebSocket('ws://localhost:8080');
