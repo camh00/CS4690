@@ -162,6 +162,7 @@ function addCourse() {
   fetch(courseUrl)
     .then((response) => response.json())
     .then((courses) => {
+
       // Check if courseName already exists
       const courseExists = courses.some(course => course.display === courseName);
       if (courseExists) {
@@ -187,9 +188,8 @@ function addCourse() {
         .then((result) => {
           console.log('Success:', result);
           alert('Course added successfully!');
-          document.getElementById('courseName').value = '';
-          // Optionally, refresh the course list
-          fetchCourses();
+          document.getElementById('course').value = '';
+          location.reload();
         })
         .catch((error) => {
           console.error('Error:', error);

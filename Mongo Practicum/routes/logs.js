@@ -7,17 +7,8 @@ const db = new DBWrapper();
 
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
-  console.log("logs/  GET");
-  const { courseId, uvuId } = req.query;
-  let logs = await db.getLogs();
-  if (courseId) {
-    logs = logs.filter(log => log.courseId === courseId);
-  }
-
-  if (uvuId) {
-    logs = logs.filter(log => log.uvuId === uvuId);
-  }
-
+  console.log("GET /api/v1/logs");
+  const logs = await db.getLogs();
   res.send(logs);
 });
 

@@ -5,7 +5,7 @@ Course = require("../models/courses");
 
 const mongoose = require('mongoose');
 
-connection = mongoose.connect('mongodb+srv://' + process.env.UNAME + ':' + process.env.PWORD + '@cs4690.4o3ur.mongodb.net/CS4690?retryWrites=true&w=majority&appName=CS4690').
+connection = mongoose.connect(process.env.DBLOGIN).
     then(
         () => { console.log('Connected!'); },
         err => { console.log('Err: ' + err); }
@@ -26,17 +26,8 @@ const CourseSchema = mongoose.Schema(
         display : { type: String, required : true },
     });
 
-const CollectionSchema = mongoose.Schema({
-    courses: { type: Array, required: true },
-});
-const TestLogSchema = mongoose.Schema({
-    logs: { type: Array, required: true },
-});
-
-// const LogModel = mongoose.model("logs", LogSchema);
-// const CourseModel = mongoose.model("courses", CourseSchema);
-const CollectionModel = mongoose.model('courses', CollectionSchema);
-const TestLogModel = mongoose.model('logs', TestLogSchema);
+const LogModel = mongoose.model("logs", LogSchema);
+const CourseModel = mongoose.model("courses", CourseSchema);
 
 module.exports = class DBWrapper
 {    
@@ -44,53 +35,40 @@ module.exports = class DBWrapper
     {
     }
 
-    async getCourses()
-    {
-        const collections = await CollectionModel.find().exec();
-        const coursesArray = collections.map(course => course.courses);
-        return coursesArray[0];
-        // using exec
-        // const courses = await CourseModel.find().exec();
-        // const coursesArray = courses.map(course => course.courses);
-        // console.log(courses);
-        // return courses;
-    }
-
-    async addCourse(course)
-    {
+    async getCourses() {
         try {
-            // Find the document containing the courses array
-            const document = await CollectionModel.findOne().exec();
-            
-            if (document) {
-                // Append the new course to the courses array
-                document.courses.push(course);
-                
-                // Save the updated document
-                await document.save();
-                console.log("Updated document with new course:", document);
-                return course;
-            } /* else {
-                // If no document exists, create a new one with the course
-                const newDocument = new CollectionModel({ courses: [course] });
-                await newDocument.save();
-                console.log("Created new document with course:", newDocument);
-                return course;
-            } */
+            // Fetch all courses from the database
+            const courses = await CourseModel.find().exec();
+            return courses;
         } catch (err) {
-            console.error('Error adding course:', err);
+            console.error('Error fetching courses:', err);
             throw err;
         }
     }
 
+    async addCourse(course)
+    {
+        const mongoDBcourse = new CourseModel(course);
+
+        await mongoDBcourse.save();
+
+        console.log("mongoDBcourse:" + mongoDBcourse)
+
+        course._id = mongoDBcourse._id;
+        return course;
+    }
+
     // option 1, using exec, preferred
     // note: you only need to use cursor or exec, but not both
-    async getLogs()
-    {
-        // using exec
-        const logs = await TestLogModel.find().exec();
-        const logsArray = logs.map(logs => logs.logs);
-        return logsArray[0];
+    async getLogs() {
+        try {
+            // Fetch all courses from the database
+            const logs = await LogModel.find().exec();
+            return logs;
+        } catch (err) {
+            console.error('Error fetching logs:', err);
+            throw err;
+        }
     }
 
 
@@ -112,41 +90,16 @@ module.exports = class DBWrapper
     }
     */
 
-    // async addLog(log)
-    // {
-    //     const mongoDBLog = new LogModel(log);
+    async addLog(log)
+    {
+        const mongoDBLog = new LogModel(log);
 
-    //     await mongoDBLog.save();
+        await mongoDBLog.save();
 
-    //     console.log("mongoDBLog:" + mongoDBLog)
+        console.log("mongoDBLog:" + mongoDBLog)
 
-    //     log._id = mongoDBLog._id;
-    //     return log;
-    // }
-    async addLog(log) {
-        try {
-            // Find the document containing the logs array
-            const document = await TestLogModel.findOne().exec();
-            
-            if (document) {
-                // Append the new log to the logs array
-                document.logs.push(log);
-                
-                // Save the updated document
-                await document.save();
-                console.log("Updated document with new log:", document);
-                return log;
-            } /* else {
-                // If no document exists, create a new one with the log
-                const newDocument = new TestLogModel({ logs: [log] });
-                await newDocument.save();
-                console.log("Created new document with log:", newDocument);
-                return log;
-            }*/
-        } catch (err) {
-            console.error('Error adding log:', err);
-            throw err;
-        }
+        log._id = mongoDBLog._id;
+        return log;
     }
 
     async deleteLog(_id)
