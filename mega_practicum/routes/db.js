@@ -2,6 +2,7 @@ const fs = require("fs");
 const { connect } = require("http2");
 Log = require("../models/log");
 Course = require("../models/courses");
+User = require("../models/user");
 
 const mongoose = require('mongoose');
 

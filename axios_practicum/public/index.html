@@ -1,0 +1,120 @@
+<!-- Practicum of: Cameorn Hancock -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Student Logs</title>
+
+    <meta charset="UTF-8" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://www.uvu.edu/favicon.ico"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" id="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <div class="theme">
+      <h3>Toggle Theme</h3>
+      <input
+        type="checkbox"
+        id="switch"
+        class="checkbox"
+        onchange="changeTheme()"
+      />
+      <label for="switch" class="toggle"> </label>
+    </div>
+    <img id="uvuLogo" src="/images/UVUSquareWhite-0003.png" />
+    <form>
+      <div class="getLogs">
+        <div class="logSelection">
+          <select
+            aria-label="Select Course"
+            id="course"
+            name="course"
+            data-cy="course_select"
+            onchange="displayIdField();"
+          >
+            <option selected value="Choose Courses">
+              Choose Courses
+            </option></select
+          ><br />
+          <br />
+
+          <div id="uvuId">
+            <label for="uvuId">UVU ID</label><br />
+
+            <input
+              type="text"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'); checkLogs(value);"
+              name="uvuId"
+              data-cy="uvuId_input"
+              onkeyup="checkInputField('uvuId'); disableButton();"
+              onclick="checkInputField('uvuId');"
+              maxlength="8"
+              placeholder="10234567"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="logDisplay">
+          <h3 id="uvuIdDisplay" data-cy="uvuIdDisplay">Student Logs for:</h3>
+          <ul data-cy="logs" id="logs" onclick="hideLogs();"></ul>
+        </div>
+      </div>
+      <div class="newLog">
+        <label>New Log</label><br />
+        <textarea
+          id="logTextArea"
+          style="height: 75px"
+          aria-label="add log textarea"
+          data-cy="log_textarea"
+          onkeyup="checkInputField('logTextArea'); disableButton();"
+          onclick="checkInputField('logTextArea');"
+        ></textarea
+        ><br />
+        <button
+          disabled
+          type="submit"
+          id="submit"
+          data-cy="add_log_btn"
+          onclick="submitLog();"
+        >
+          Add Log
+        </button>
+      </div>
+    </form>
+  </body>
+</html>
+
+<!-- DONE: move all TODOs that done above to down below here and change the label to DONE:. -->
+<!-- DONE: set the lang attribute to American English -->
+<!-- DONE: set the characterset to utf8 -->
+<!-- DONE: temporarily use stackoverflow's favicon. "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico"-->
+<!-- DONE: Load the CSS file -->
+<!-- DONE: The following options are currently static values to show you sample data.  -->
+<!-- AJAX to replace them with dynamic data from GET https://json-server-ft3qa5--3000.local.webcontainer.io/api/v1/courses -->
+<!-- NOTE: all AJAX in this project is via fetch-->
+<!-- Use your own unique URL you recorded, not the sample one above. -->
+<!-- DONE: Don't show the uvu id text input box until a course was selected above. -->
+<!-- DONE: If course ever becomes unselected, don't show the uvu id text input box.-->
+<!-- DONE: write `10234567` as sample data on the input field below  -->
+<!-- DONE: Ensure the character length never exceeds 8 -->
+<!-- DONE: Only numbers, no letters or other characters-->
+<!-- DONE: When character length reaches 8 and it's only digits, fire off ajax request, if 200 or 304, display results, else appropriately guide the user. -->
+<!-- DONE: The following options are currently static values to show you an example.  -->
+<!-- You must replace them with dynamic data by ajaxing GET https://json-server-ft3qa5--3000.local.webcontainer.io/logs?courseId=<courseID>&uvuId=<uvuID> -->
+<!-- DONE: Click anywhere on the log to toggle visibility of the log (text only, not the date) -->
+<!-- DONE: Button should be disabled until the logs, if any, are displayed and there's text in the textarea -->
+<!-- DONE: Button should AJAX PUT the textarea value to json-server which will store it -->
+<!-- DONE: Load the JS file -->
+<!-- DONE: add appropriate comments you feel are necessary, if any, for the next coder to understand -->
