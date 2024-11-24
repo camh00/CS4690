@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <link rel="icon" href="https://www.uvu.edu/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="stylesheets/uvu_style.css" />
+    <script src="javascripts/teacherScript.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <img id="uvuLogo" src="/images/UVUSquareWhite-0003.png" />
+    
+    <div class="container">
+        <h1>Teacher Dashboard</h1>
+
+        <!-- Section for creating and viewing courses -->
+        <section id="coursesSection">
+            <h2>Courses</h2>
+            <form id="createCourseForm">
+                <label for="courseName">Course Name</label><br />
+                <input type="text" id="courseName" name="courseName" data-cy="course_input" maxlength="8" placeholder="CS 1234" required />
+                <button type="submit" id="addCourse" data-cy="add_course_btn">Add Course</button>
+            </form>
+            <h3>All Courses</h3>
+            <ul id="coursesList"></ul>
+        </section>
+
+        <!-- Section for adding students and TAs -->
+        <section id="usersSection">
+            <h2>Add User</h2>
+            <form id="createUserForm">
+                <label for="username">Username</label><br />
+                <input type="text" id="username" name="username" required /><br />
+                <label for="password">Password</label><br />
+                <input type="password" id="password" name="password" required /><br />
+                <label for="role">Role</label><br />
+                <select id="role" name="role" required>
+                    <option value="student">Student</option>
+                    <option value="ta">TA</option>
+                </select><br />
+                <button type="submit">Add User</button>
+            </form>
+        </section>
+
+        <!-- Section for viewing logs -->
+        <section id="logsSection">
+            <h2>Student Logs</h2>
+            <form>
+                <label for="course">Select Course</label><br />
+                <select aria-label="Select Course" id="course" name="course" data-cy="course_select" onchange="displayIdField();">
+                    <option selected value="Choose Courses">Choose Courses</option>
+                </select><br />
+                <label for="uvuId">UVU ID</label><br />
+                <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'); checkLogs(value);" id="uvuId" name="uvuId" /><br />
+            </form>
+            <h3>All Logs</h3>
+            <ul id="logsList"></ul>
+        </section>
+    </div>
+</body>
+</html>
