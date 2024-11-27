@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="icon" href="https://www.uvu.edu/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="stylesheets/uvu_style.css" />
+    <script src="javascripts/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <img id="uvuLogo" src="/images/UVUSquareWhite-0003.png" />
+    
+    <div class="container">
+        <h1>Dashboard</h1>
+
+        <!-- Admin Section -->
+        <section id="adminSection" class="role-section">
+            <h2>Admin Dashboard</h2>
+            <h3>Courses</h3>
+            <form id="createCourseForm">
+                <label for="courseName">Course Name</label><br />
+                <input type="text" id="courseName" name="courseName" data-cy="course_input" maxlength="8" placeholder="CS 1234" required />
+                <button type="submit" id="addCourse" data-cy="add_course_btn">Add Course</button>
+            </form>
+            <h3>All Courses</h3>
+            <ul id="coursesList"></ul>
+
+            <h3>Create User</h3>
+            <form id="createUserForm">
+                <label for="username">Username</label><br />
+                <input type="text" id="username" name="username" required /><br />
+                <label for="password">Password</label><br />
+                <input type="password" id="password" name="password" required /><br />
+                <label for="role">Role</label><br />
+                <select id="role" name="role" required>
+                    <option value="3">Student</option>
+                    <option value="2">Teacher</option>
+                </select><br />
+                <button type="submit">Create User</button>
+            </form>
+
+            <h3>Student Logs</h3>
+            <ul id="adminLogsList"></ul>
+        </section>
+
+        <!-- Teacher Section -->
+        <section id="teacherSection" class="role-section">
+            <h2>Teacher Dashboard</h2>
+            <h3>Courses</h3>
+            <form id="teacherCreateCourseForm">
+                <label for="teacherCourseName">Course Name</label><br />
+                <input type="text" id="teacherCourseName" name="teacherCourseName" data-cy="course_input" maxlength="8" placeholder="CS 1234" required />
+                <button type="submit" id="teacherAddCourse" data-cy="add_course_btn">Add Course</button>
+            </form>
+            <h3>All Courses</h3>
+            <ul id="teacherCoursesList"></ul>
+
+            <h3>Add Student</h3>
+            <form id="teacherCreateUserForm">
+                <label for="teacherUsername">Username</label><br />
+                <input type="text" id="teacherUsername" name="teacherUsername" required /><br />
+                <label for="teacherPassword">Password</label><br />
+                <input type="password" id="teacherPassword" name="teacherPassword" required /><br />
+                <label for="teacherRole">Role</label><br />
+                <select id="teacherRole" name="teacherRole" required>
+                    <option value="3">Student</option>
+                </select><br />
+                <button type="submit">Add User</button>
+            </form>
+
+            <h3>Student Logs</h3>
+            <ul id="teacherLogsList"></ul>
+        </section>
+
+        <!-- Student Section -->
+        <section id="studentSection" class="role-section">
+            <h2>Student Dashboard</h2>
+            <h3>My Courses</h3>
+            <ul id="studentCoursesList"></ul>
+
+            <h3>My Logs</h3>
+            <ul id="studentLogsList"></ul>
+        </section>
+    </div>
+</body>
+</html>

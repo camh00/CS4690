@@ -38,12 +38,13 @@ passport.use(new LocalStrategy(
 ));
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  done(null, { id: user.id, role: user.role });
 });
 
 passport.deserializeUser(async function(id, done) {
   try {
     const user = await User.findById(id);
+    user.role = obj.role; // Restore the role from the session
     done(null, user);
   } catch (err) {
     done(err);

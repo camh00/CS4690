@@ -1,9 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+/* GET user role. */
+router.get('/role', function(req, res, next) {
+  if (req.isAuthenticated()) {
+    res.json({ role: req.user.role });
+  } else {
+    res.status(401).json({ error: 'Unauthorized' });
+  }
 });
 
 module.exports = router;
