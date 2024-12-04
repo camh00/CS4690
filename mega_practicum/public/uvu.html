@@ -16,18 +16,18 @@
     <img id="uvuLogo" src="/images/UVUSquareWhite-0003.png" />
     
     <div class="container">
-        <h1>Dashboard</h1>
+        <h1 id="welcome">Welcome</h1>
 
         <!-- Admin Section -->
         <section id="adminSection" class="role-section">
             <h2>Admin Dashboard</h2>
-            <h3>Courses</h3>
+            <h3>Create a Course</h3>
             <form id="createCourseForm">
                 <label for="courseName">Course Name</label><br />
                 <input type="text" id="courseName" name="courseName" data-cy="course_input" maxlength="8" placeholder="CS 1234" required />
                 <button type="submit" id="addCourse" data-cy="add_course_btn">Add Course</button>
             </form>
-            <h3>All Courses</h3>
+            <h3>View Courses</h3>
             <ul id="coursesList"></ul>
 
             <h3>Create User</h3>
@@ -57,7 +57,7 @@
                 <input type="text" id="teacherCourseName" name="teacherCourseName" data-cy="course_input" maxlength="8" placeholder="CS 1234" required />
                 <button type="submit" id="teacherAddCourse" data-cy="add_course_btn">Add Course</button>
             </form>
-            <h3>All Courses</h3>
+            <h3>View Courses</h3>
             <ul id="teacherCoursesList"></ul>
 
             <h3>Add Student</h3>
