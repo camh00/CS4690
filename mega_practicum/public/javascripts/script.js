@@ -7,6 +7,41 @@
 const courseUrl = '/api/v1/courses';
 const logUrl = '/api/v1/logs';
 
+// Add User
+document.addEventListener('DOMContentLoaded', () => {
+  const createUser = document.getElementById('createUser');
+
+  createUser.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const role = document.getElementById('role').value;
+    const school = document.querySelector('head > title').textContent;
+
+    try {
+      const response = await fetch('/users/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password, role, school }),
+      });
+
+      if (response.ok) {
+        alert('User created successfully!');
+        createUser.reset();
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error}`);
+      }
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+    }
+  });
+});
+
+// Fetch courses from db
 function fetchCourses() {
   fetch(courseUrl)
     .then((response) => response.json())

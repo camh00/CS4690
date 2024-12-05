@@ -36,6 +36,15 @@ module.exports = class DBWrapper
     {
     }
 
+    async createUser(user)
+    {
+        const newUser = new User(user);
+        await newUser.save();
+
+        user._id = newUser._id;
+        return newUser;
+    }
+
     async getCourses() {
         try {
             // Fetch all courses from the database

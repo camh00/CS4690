@@ -41,9 +41,9 @@ passport.serializeUser(function(user, done) {
   done(null, { id: user.id, role: user.role });
 });
 
-passport.deserializeUser(async function(id, done) {
+passport.deserializeUser(async function(obj, done) {
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(obj.id);
     user.role = obj.role; // Restore the role from the session
     done(null, user);
   } catch (err) {
@@ -63,7 +63,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Configure session middleware
 app.use(session({
-  secret: 'your_secret_key', // Replace with your own secret key
+  secret: process.env.SESSION_SECRET, // Replace with your own secret key
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false } // Set to true if using HTTPS

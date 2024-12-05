@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Student Logs</title>
+    <title>uvu</title>
 
     <meta charset="UTF-8" />
 
@@ -24,6 +24,32 @@
   </head>
   <body>
     <img id="uvuLogo" src="/images/UVUSquareWhite-0003.png" />
+    <form id="createUser">
+      <h1>Create a User</h1>
+      <label for="username">Username:</label><br />
+      <input
+        type="text"
+        id="username"
+        name="username"
+        data-cy="username_input"
+        required
+      /><br />
+      <label for="password">Password:</label><br />
+      <input
+        type="password"
+        id="password"
+        name="password"
+        data-cy="password_input"
+        required
+      /><br />
+      <label for="role">Role</label><br />
+      <select id="role" name="role" data-cy="role_select" required>
+        <option disabled selected value="Select a Role">Select a Role</option>
+        <option value="2">Teacher</option>
+        <option value="3">Student</option>
+      </select><br />
+      <button type="submit" data-cy="create_user_btn">Create User</button>
+    </form>
     <form>
       <h1>Student Logs</h1>
       <select

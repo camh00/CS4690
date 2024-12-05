@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const path = require('path');
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
 
 /* GET login page. */
 router.get('/', function(req, res, next) {
@@ -35,7 +36,7 @@ router.post('/', async function(req, res, next) { // Add `next` as an argument
     const user = await User.findOne({ username: req.body.username });
     if (user) {
       // Check if password matches
-      const result = req.body.password === user.password;
+      const result = await bcrypt.compare(req.body.password, user.password);
       if (result) {
         req.login(user, function(err) {
           if (err) {
