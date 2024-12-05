@@ -1,1 +1,2 @@
 DBLOGIN='mongodb+srv://YourUsername:YourPassword@cs4690.4o3ur.mongodb.net/CS4690?retryWrites=true&w=majority&appName=CS4690'
+SESSION_SECRET='your_secret_key'
