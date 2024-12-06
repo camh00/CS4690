@@ -82,6 +82,9 @@ body {
     justify-self: auto;
   }
   
+#aminTeacherSection {
+  display: none;
+}
   /* Tab styling */
 .tab {
   overflow: hidden;

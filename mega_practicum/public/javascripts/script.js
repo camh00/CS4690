@@ -1,6 +1,4 @@
 // Practicum of: Cameron Hancock
-// DONE: Wire up the app's behavior here.
-// NOTE: The TODOs are listed in index.html
 
 'use strict';
 // Populate course selections
@@ -25,8 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
   getUserRole().then(userRole => {
     // showSectionsBasedOnRole(userRole);
     if (userRole === 1) { // Admin
+      document.getElementById('aminTeacherSection').style.display = 'block';
       setupCreateUserForm();
     } else if (userRole === 2) { // Teacher
+      document.getElementById('aminTeacherSection').style.display = 'block';
       setupCreateStudentForm();
     }
   });
@@ -37,11 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
   fetch('/users')
     .then((response) => response.json())
     .then((users) => {
-      console.log(users);
       const usersList = document.getElementById('userList');
       users.forEach((user) => {
         const li = document.createElement('li');
-        console.log(user.role);
         switch (user.role) {
           case 1:
             user.role = 'admin';
@@ -99,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
   fetch('/api/v1/courses')
     .then((response) => response.json())
     .then((courses) => {
-      console.log(courses);
       const coursesList = document.getElementById('courseList');
       courses.forEach((course) => {
         const li = document.createElement('li');
