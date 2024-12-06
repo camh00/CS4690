@@ -7,6 +7,31 @@
 const courseUrl = '/api/v1/courses';
 const logUrl = '/api/v1/logs';
 
+async function getUserRole() {
+  try {
+    const response = await fetch('/users/role');
+    if (!response.ok) {
+      throw new Error('Failed to fetch user role');
+    }
+    const data = await response.json();
+    return data.role;
+  } catch (error) {
+    console.error('Error fetching user role:', error);
+    return null;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  getUserRole().then(userRole => {
+    // showSectionsBasedOnRole(userRole);
+    if (userRole === 1) { // Admin
+      setupCreateUserForm();
+    } else if (userRole === 2) { // Teacher
+      setupCreateStudentForm();
+    }
+  });
+});
+
 // display all users
 document.addEventListener('DOMContentLoaded', () => {
   fetch('/users')
@@ -16,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const usersList = document.getElementById('userList');
       users.forEach((user) => {
         const li = document.createElement('li');
+        console.log(user.role);
         switch (user.role) {
           case 1:
             user.role = 'admin';
@@ -30,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             user.role = 'unknown';
         }
         const courses = user.courses.map(course => course.display).join(', ');
-        li.textContent = `${user.username} - ${role} - Courses: ${courses}`;
+        li.textContent = `${user.username} - ${user.role} - Courses: ${courses}`;
         usersList.appendChild(li);
       });
     })
@@ -86,10 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Add User
-document.addEventListener('DOMContentLoaded', () => {
-  const createUser = document.getElementById('createUser');
-
-  createUser.addEventListener('submit', async (e) => {
+function setupCreateUserForm() {
+  const createUserForm = document.getElementById('createUser');
+  createUserForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const username = document.getElementById('newUsername').value;
@@ -103,12 +128,12 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, role, school }),
+        body: JSON.stringify({ username, password, school, role }),
       });
 
       if (response.ok) {
         alert('User created successfully!');
-        createUser.reset();
+        createUserForm.reset();
       } else {
         const errorData = await response.json();
         alert(`Error: ${errorData.error}`);
@@ -117,7 +142,41 @@ document.addEventListener('DOMContentLoaded', () => {
       alert(`Error: ${error.message}`);
     }
   });
-});
+}
+
+function setupCreateStudentForm() {
+  document.getElementById('userCreationTitle').textContent = 'Create a Student';
+  document.getElementById('roleSelection').style.display = 'none';
+  const createUserForm = document.getElementById('createUser');
+  createUserForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById('newUsername').value;
+    const password = document.getElementById('password').value;
+    const role = 3; // Force role to student
+    const school = document.querySelector('head > title').textContent;
+
+    try {
+      const response = await fetch('/users/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password, school, role }),
+      });
+
+      if (response.ok) {
+        alert('Student created successfully!');
+        createUserForm.reset();
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error}`);
+      }
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+    }
+  });
+}
 
 // Fetch courses from db
 function fetchCourses() {

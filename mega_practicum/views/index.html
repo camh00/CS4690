@@ -43,7 +43,7 @@
         </div>
         <div class="right">
           <form id="createUser">
-            <h1>Create a User</h1>
+            <h1 id="userCreationTitle">Create a User</h1>
             <label for="newUsername">Username:</label><br />
             <input
               type="text"
@@ -60,12 +60,14 @@
               data-cy="password_input"
               required
             /><br />
-            <label for="role">Role</label><br />
-            <select id="role" name="role" data-cy="role_select" required>
-              <option disabled selected value="Select a Role">Select a Role</option>
-              <option value="2">Teacher</option>
-              <option value="3">Student</option>
-            </select><br />
+            <div id="roleSelection">
+              <label for="role">Role</label><br />
+              <select id="role" name="role" data-cy="role_select" required>
+                <option disabled selected value="Select a Role">Select a Role</option>
+                <option value="2">Teacher</option>
+                <option value="3">Student</option>
+              </select><br />
+            </div>
             <button type="submit" data-cy="create_user_btn">Create User</button>
           </form>
         </div>
@@ -160,6 +162,28 @@
       </button>
     </form>
   </body>
+  <!-- <script>
+    async function getUserRole() {
+      try {
+        const response = await fetch('/users/role');
+        if (!response.ok) {
+          throw new Error('Failed to fetch user role');
+        }
+        const data = await response.json();
+        return data.role;
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+        return null;
+      }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      getUserRole().then(userRole => {
+        if (userRole === 2) { // Teacher
+          document.getElementById('roleSelection').style.display = 'none';
+        }
+      });
+    });
+  </script> -->
   <noscript>
     <style type="text/css">
         form {display:none;}

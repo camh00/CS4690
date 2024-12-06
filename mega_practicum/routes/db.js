@@ -62,6 +62,16 @@ module.exports = class DBWrapper
         }
     }
 
+    async getAllStudents() {
+        try {
+          const students = await User.find({ role: 3 }, 'username role courses').populate('courses', 'display');
+          return students;
+        } catch (err) {
+          console.error('Error fetching students:', err);
+          throw err;
+        }
+      }
+
     async createUser(user)
     {
         const newUser = new User(user);

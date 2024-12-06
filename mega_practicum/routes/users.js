@@ -2,6 +2,7 @@ var express = require('express');
 const DBWrapper = require('./db');
 var router = express.Router();
 const db = new DBWrapper();
+const isLoggedIn = require('../middleware/auth');
 
 /* GET user role. */
 router.get('/role', function(req, res, next) {
@@ -12,17 +13,32 @@ router.get('/role', function(req, res, next) {
   }
 });
 
-/* GET all users */
-router.get('/', async function(req, res, next) {
+/* GET users based on role*/
+router.get('/', isLoggedIn, async function(req, res, next) {
   console.log("GET /users");
-  const users = await db.getAllUsers();
-  res.send(users);
+  try {
+    let users;
+    if (req.user.role === 2) { // Teacher
+      users = await db.getAllStudents();
+    } else {
+      users = await db.getAllUsers();
+    }
+    res.send(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 /* POST new user*/
-router.post('/create', async function(req, res, next) {
+router.post('/create', isLoggedIn, async function(req, res, next) {
   try {
     const { username, password, school, role } = req.body;
+
+    // If the logged-in user is a teacher, they can only create students
+    if (req.user.role === 2 && role !== 3) {
+      return res.status(403).json({ error: 'Teachers can only create students' });
+    }
+
     const newUser = await db.createUser({ username, password, school, role });
     res.status(201).json({ message: 'User created successfully', user: newUser });
   } catch (error) {
