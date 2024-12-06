@@ -82,3 +82,60 @@ body {
     justify-self: auto;
   }
   
+  /* Tab styling */
+.tab {
+  overflow: hidden;
+  border-bottom: 1px solid #ccc;
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: space-around;
+}
+
+.tab button {
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  flex: 1;
+  text-align: center;
+}
+
+.tab button:hover {
+  background-color: #ddd;
+}
+
+.tab button.active {
+  background-color: #ccc;
+}
+
+.tabcontent-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border-top: none;
+  width: 100%;
+}
+
+.tabcontent.active {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tabcontent .left {
+  width: 45%;
+}
+
+.tabcontent .right {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}

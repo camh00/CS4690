@@ -24,52 +24,74 @@
   </head>
   <body>
     <img id="uvuLogo" src="/images/UVUSquareWhite-0003.png" />
-    <div id="userList">
-      <h1>All Users</h1>
-      <ul id="userList" data-cy="user_list">
-        <!-- User items will be dynamically inserted here -->
-      </ul>
+
+    <!-- Tab navigation -->
+    <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'Users')">Users</button>
+      <button class="tablinks" onclick="openTab(event, 'Courses')">Courses</button>
     </div>
-    <form id="enrollUserForm">
-      <h1>Enroll User in Course</h1>
-      <label for="username">Username:</label><br />
-      <input type="text" id="username" name="username" required /><br />
-      <label for="courseDisplay">Course Name:</label><br />
-      <input type="text" id="courseDisplay" name="courseDisplay" required /><br />
-      <button type="submit">Enroll</button>
-    </form>
-    <div id="courseList">
-      <h1>All Courses</h1>
-      <ul id="courseList" data-cy="course_list">
-        <!-- Course items will be dynamically inserted here -->
-      </ul>
+
+    <div class="tabcontent-container">
+      <div id="Users" class="tabcontent">
+        <div class="left">
+          <div id="userList">
+            <h1>All Users</h1>
+            <ul id="userList" data-cy="user_list">
+              <!-- User items will be dynamically inserted here -->
+            </ul>
+          </div>
+        </div>
+        <div class="right">
+          <form id="createUser">
+            <h1>Create a User</h1>
+            <label for="newUsername">Username:</label><br />
+            <input
+              type="text"
+              id="newUsername"
+              name="newUsername"
+              data-cy="newUsername_input"
+              required
+            /><br />
+            <label for="password">Password:</label><br />
+            <input
+              type="password"
+              id="password"
+              name="password"
+              data-cy="password_input"
+              required
+            /><br />
+            <label for="role">Role</label><br />
+            <select id="role" name="role" data-cy="role_select" required>
+              <option disabled selected value="Select a Role">Select a Role</option>
+              <option value="2">Teacher</option>
+              <option value="3">Student</option>
+            </select><br />
+            <button type="submit" data-cy="create_user_btn">Create User</button>
+          </form>
+        </div>
+      </div>
+      <div id="Courses" class="tabcontent">
+        <div class="left">
+          <div id="courseList">
+            <h1>All Courses</h1>
+            <ul id="courseList" data-cy="course_list">
+              <!-- Course items will be dynamically inserted here -->
+            </ul>
+          </div>
+        </div>
+        <div class="right">
+          <form id="enrollUserForm">
+            <h1>Enroll User in Course</h1>
+            <label for="username">Username:</label><br />
+            <input type="text" id="username" name="username" required /><br />
+            <label for="courseDisplay">Course Name:</label><br />
+            <input type="text" id="courseDisplay" name="courseDisplay" required /><br />
+            <button type="submit">Enroll</button>
+          </form>
+        </div>
+      </div>
     </div>
-    <form id="createUser">
-      <h1>Create a User</h1>
-      <label for="newUsername">Username:</label><br />
-      <input
-        type="text"
-        id="newUsername"
-        name="newUsername"
-        data-cy="newUsername_input"
-        required
-      /><br />
-      <label for="password">Password:</label><br />
-      <input
-        type="password"
-        id="password"
-        name="password"
-        data-cy="password_input"
-        required
-      /><br />
-      <label for="role">Role</label><br />
-      <select id="role" name="role" data-cy="role_select" required>
-        <option disabled selected value="Select a Role">Select a Role</option>
-        <option value="2">Teacher</option>
-        <option value="3">Student</option>
-      </select><br />
-      <button type="submit" data-cy="create_user_btn">Create User</button>
-    </form>
+
     <form>
       <h1>Student Logs</h1>
       <select

@@ -53,7 +53,7 @@ module.exports = class DBWrapper
     async getAllUsers()
     {
         try {
-            const users = await User.find({}, 'username role');
+            const users = await User.find({}, 'username role courses').populate('courses', 'display');
             return users;
         }
         catch (err) {
@@ -74,7 +74,7 @@ module.exports = class DBWrapper
     async getCourses() {
         try {
             // Fetch all courses from the database
-            const courses = await CourseModel.find().exec();
+            const courses = await Course.find({}, 'display users').populate('users', 'username');
             return courses;
         } catch (err) {
             console.error('Error fetching courses:', err);

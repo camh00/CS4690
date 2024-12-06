@@ -29,7 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
           default:
             user.role = 'unknown';
         }
-        li.textContent = user.username + ' - ' + user.role;
+        const courses = user.courses.map(course => course.display).join(', ');
+        li.textContent = `${user.username} - ${role} - Courses: ${courses}`;
         usersList.appendChild(li);
       });
     })
@@ -76,7 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const coursesList = document.getElementById('courseList');
       courses.forEach((course) => {
         const li = document.createElement('li');
-        li.textContent = course.display;
+        const students = course.users.map(user => user.username).join(', ');
+        li.textContent = `${course.display} - Students: ${students}`;
         coursesList.appendChild(li);
       });
     })
@@ -314,4 +316,30 @@ fetchCourses();
 // Add event listener to the button
 document.addEventListener('DOMContentLoaded', (event) => {
   document.getElementById('addCourse').addEventListener('click', addCourse);
+});
+
+function openTab(evt, tabName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(tabName).style.display = "flex";
+  evt.currentTarget.className += " active";
+}
+
+// Set default tab to open
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('.tablinks').click();
 });
