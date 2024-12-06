@@ -24,14 +24,34 @@
   </head>
   <body>
     <img id="uvuLogo" src="/images/UVUSquareWhite-0003.png" />
+    <div id="userList">
+      <h1>All Users</h1>
+      <ul id="userList" data-cy="user_list">
+        <!-- User items will be dynamically inserted here -->
+      </ul>
+    </div>
+    <form id="enrollUserForm">
+      <h1>Enroll User in Course</h1>
+      <label for="username">Username:</label><br />
+      <input type="text" id="username" name="username" required /><br />
+      <label for="courseDisplay">Course Name:</label><br />
+      <input type="text" id="courseDisplay" name="courseDisplay" required /><br />
+      <button type="submit">Enroll</button>
+    </form>
+    <div id="courseList">
+      <h1>All Courses</h1>
+      <ul id="courseList" data-cy="course_list">
+        <!-- Course items will be dynamically inserted here -->
+      </ul>
+    </div>
     <form id="createUser">
       <h1>Create a User</h1>
-      <label for="username">Username:</label><br />
+      <label for="newUsername">Username:</label><br />
       <input
         type="text"
-        id="username"
-        name="username"
-        data-cy="username_input"
+        id="newUsername"
+        name="newUsername"
+        data-cy="newUsername_input"
         required
       /><br />
       <label for="password">Password:</label><br />
@@ -62,22 +82,22 @@
         <option selected value="Choose Courses">Choose Courses</option></select
       ><br />
 
-      <label for="uvuId">UVU ID</label><br />
+      <label for="uvuId">Username</label><br />
 
       <input
         type="text"
         oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'); checkLogs(value);"
-        id="uvuId"
-        name="uvuId"
-        data-cy="uvuId_input"
-        onkeyup="checkInputField('uvuId'); disableButton();"
-        onclick="checkInputField('uvuId');"
+        id="logUsername"
+        name="logUsername"
+        data-cy="logUsername_input"
+        onkeyup="checkInputField('username'); disableButton();"
+        onclick="checkInputField('username');"
         maxlength="8"
         placeholder="12345678"
         required
       />
 
-      <h3 id="uvuIdDisplay" data-cy="uvuIdDisplay">Student Logs for:</h3>
+      <h3 id="usernameDisplay" data-cy="usernameDisplay">Student Logs for:</h3>
       <ul data-cy="logs" id="logs" onclick="hideLogs();"></ul>
       <label>New Log</label><br />
       <textarea

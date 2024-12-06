@@ -12,6 +12,13 @@ router.get('/role', function(req, res, next) {
   }
 });
 
+/* GET all users */
+router.get('/', async function(req, res, next) {
+  console.log("GET /users");
+  const users = await db.getAllUsers();
+  res.send(users);
+});
+
 /* POST new user*/
 router.post('/create', async function(req, res, next) {
   try {

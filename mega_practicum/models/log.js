@@ -1,17 +1,13 @@
 
 const mongoose = require('mongoose');
-  
-module.exports = class Log
-{
-    courseId = null;
-    uvuId = null;
-    date = new Date().toLocaleString();
-    text = null;
+const Schema = mongoose.Schema;
 
-    constructor(courseId, uvuId, msg)
-    {
-        this.courseId = courseId;
-        this.uvuId = uvuId;
-        this.text = msg;
-    }
-}
+const LogSchema = new Schema({
+    courseId: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
+    date: Date,
+    text: { type: String, required: true }
+});
+
+const Log = mongoose.model('Log', LogSchema);
+module.exports = Log;

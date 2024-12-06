@@ -14,7 +14,7 @@ router.get('/', async function(req, res, next) {
 
 router.post('/', async function(req, res, next) {
   console.log("logs/  POST " + req.body);
-  const log = new Log(req.body.courseId, req.body.uvuId, req.body.text);
+  const log = new Log(req.body.courseId, req.body.username, req.body.text);
   db.addLog(log);
 
   res.send(JSON.stringify(log));

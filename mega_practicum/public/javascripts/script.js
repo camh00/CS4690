@@ -7,6 +7,82 @@
 const courseUrl = '/api/v1/courses';
 const logUrl = '/api/v1/logs';
 
+// display all users
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('/users')
+    .then((response) => response.json())
+    .then((users) => {
+      console.log(users);
+      const usersList = document.getElementById('userList');
+      users.forEach((user) => {
+        const li = document.createElement('li');
+        switch (user.role) {
+          case 1:
+            user.role = 'admin';
+            break;
+          case 2:
+            user.role = 'teacher';
+            break;
+          case 3:
+            user.role = 'student';
+            break;
+          default:
+            user.role = 'unknown';
+        }
+        li.textContent = user.username + ' - ' + user.role;
+        usersList.appendChild(li);
+      });
+    })
+    .catch((err) => console.log(err));
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const enrollUserForm = document.getElementById('enrollUserForm');
+
+  enrollUserForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value;
+    const courseDisplay = document.getElementById('courseDisplay').value;
+
+    try {
+      const response = await fetch('/enroll', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, courseDisplay }),
+      });
+
+      if (response.ok) {
+        alert('User enrolled successfully!');
+        enrollUserForm.reset();
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error}`);
+      }
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+    }
+  });
+});
+
+// display all courses
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('/api/v1/courses')
+    .then((response) => response.json())
+    .then((courses) => {
+      console.log(courses);
+      const coursesList = document.getElementById('courseList');
+      courses.forEach((course) => {
+        const li = document.createElement('li');
+        li.textContent = course.display;
+        coursesList.appendChild(li);
+      });
+    })
+    .catch((err) => console.log(err));
+});
+
 // Add User
 document.addEventListener('DOMContentLoaded', () => {
   const createUser = document.getElementById('createUser');
@@ -14,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
   createUser.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const username = document.getElementById('username').value;
+    const username = document.getElementById('newUsername').value;
     const password = document.getElementById('password').value;
     const role = document.getElementById('role').value;
     const school = document.querySelector('head > title').textContent;
@@ -60,9 +136,9 @@ function fetchCourses() {
 // Hide id field until a course has been selected
 function displayIdField() {
   if (document.getElementById('course').value === 'Choose Courses') {
-    document.getElementById('uvuId').style.display = 'none';
+    document.getElementById('logUsername').style.display = 'none';
   } else {
-    document.getElementById('uvuId').style.display = 'inline';
+    document.getElementById('logUsername').style.display = 'inline';
   }
 }
 
@@ -76,16 +152,16 @@ function checkInputField(id) {
 }
 
 // search for logs from selected course and uvu id
-function checkLogs(uvuID) {
-  document.getElementById('uvuIdDisplay').textContent =
-    'Student Logs for: ' + uvuID;
+function checkLogs(username) {
+  document.getElementById('usernameDisplay').textContent =
+    'Student Logs for: ' + username;
   document.getElementById('logs').innerHTML = '';
   const courseID =
     document.getElementById('course').options[
       document.getElementById('course').selectedIndex
     ].id;
-  if (uvuID.length == 8) {
-    fetch(logUrl + '?courseId=' + courseID + '&uvuId=' + uvuID)
+  if (username.length == 8) {
+    fetch(logUrl + '?courseId=' + courseID + '&username=' + username)
       .then((response) => response.json())
       .then((logs) => {
         console.log(logs);

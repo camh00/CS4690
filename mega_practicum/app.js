@@ -16,6 +16,7 @@ var loginRouter = require('./routes/login');
 var usersRouter = require('./routes/users');
 var coursesRouter = require('./routes/courses');
 var logsRouter = require('./routes/logs');
+var enrollRouter = require('./routes/enroll');
 
 var app = express();
 
@@ -63,7 +64,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Configure session middleware
 app.use(session({
-  secret: process.env.SESSION_SECRET, // Replace with your own secret key
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false } // Set to true if using HTTPS
@@ -77,6 +78,7 @@ app.use('/login', loginRouter);
 app.use('/users', usersRouter);
 app.use('/api/v1/courses', coursesRouter);
 app.use('/api/v1/logs', logsRouter);
+app.use('/enroll', enrollRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

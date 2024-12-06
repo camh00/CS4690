@@ -36,6 +36,32 @@ module.exports = class DBWrapper
     {
     }
 
+    async getUser(username)
+    {
+        try {
+            const user = await
+                User.findOne({ username
+                });
+            return user;
+        }
+        catch (err) {
+            console.error('Error fetching user:', err);
+            throw err;
+        }
+    }
+
+    async getAllUsers()
+    {
+        try {
+            const users = await User.find({}, 'username role');
+            return users;
+        }
+        catch (err) {
+            console.error('Error fetching users:', err);
+            throw err;
+        }
+    }
+
     async createUser(user)
     {
         const newUser = new User(user);
@@ -73,7 +99,7 @@ module.exports = class DBWrapper
     async getLogs() {
         try {
             // Fetch all courses from the database
-            const logs = await LogModel.find().exec();
+            const logs = await Log.find().exec();
             return logs;
         } catch (err) {
             console.error('Error fetching logs:', err);
@@ -117,4 +143,33 @@ module.exports = class DBWrapper
         const result = await LogModel.findByIdAndDelete(_id);
         return result;
     }
+
+    async enrollUserInCourse(username, courseDisplay) {
+        try {
+          const user = await User.findOne({ username });
+          const course = await Course.findOne({ display: courseDisplay });
+    
+          if (!user || !course) {
+            throw new Error('User or Course not found');
+          }
+    
+          // Add course to user's courses list
+          if (!user.courses.includes(course._id)) {
+            user.courses.push(course._id);
+          }
+    
+          // Add user to course's users list
+          if (!course.users.includes(user._id)) {
+            course.users.push(user._id);
+          }
+    
+          await user.save();
+          await course.save();
+    
+          return { user, course };
+        } catch (err) {
+          console.error('Error enrolling user in course:', err);
+          throw err;
+        }
+      }
 }
