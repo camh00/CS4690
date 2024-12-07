@@ -29,6 +29,11 @@ router.get('/', isLoggedIn, async function(req, res, next) {
   }
 });
 
+/* GET current user */
+router.get('/me', isLoggedIn, function(req, res, next) {
+  res.json(req.user);
+});
+
 /* POST new user*/
 router.post('/create', isLoggedIn, async function(req, res, next) {
   try {

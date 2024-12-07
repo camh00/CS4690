@@ -15,7 +15,7 @@ connection = mongoose.connect(process.env.DBLOGIN).
 const LogSchema = mongoose.Schema(
     {
         courseId : { type: String, required : true },
-        uvuId : { type: Number, required : true },
+        username : { type: String, required : true },
         date : Date,
         text : { type: String, required : true },
         id : mongoose.Schema.ObjectId
@@ -91,6 +91,16 @@ module.exports = class DBWrapper
             throw err;
         }
     }
+
+    async getCurrentUserCourses(username) {
+        try {
+          const user = await User.findOne({ username }).populate('courses', 'display');
+          return user.courses;
+        } catch (err) {
+          console.error('Error fetching user courses:', err);
+          throw err;
+        }
+      }
 
     async addCourse(course)
     {

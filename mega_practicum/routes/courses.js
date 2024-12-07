@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 DBWrapper = require('./db');
 Log = require("../models/courses");
+const isLoggedIn = require('../middleware/auth');
 
 const db = new DBWrapper();
 
@@ -9,6 +10,13 @@ const db = new DBWrapper();
 router.get('/', async function(req, res, next) {
   console.log("GET /api/v1/courses");
   const courses = await db.getCourses();
+  res.send(courses);
+});
+
+/* Get current user's courses */
+router.get('/my', async function(req, res, next) {
+  console.log("GET /api/v1/courses/my");
+  const courses = await db.getCurrentUserCourses(req.user.username);
   res.send(courses);
 });
 

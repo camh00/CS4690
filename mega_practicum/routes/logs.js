@@ -12,12 +12,21 @@ router.get('/', async function(req, res, next) {
   res.send(logs);
 });
 
-router.post('/', async function(req, res, next) {
-  console.log("logs/  POST " + req.body);
-  const log = new Log(req.body.courseId, req.body.username, req.body.text);
-  db.addLog(log);
+router.post('/', async (req, res) => {
+  try {
+    const { courseId, username, text } = req.body; // Use 'username' instead of 'logUsername'
+    if (!courseId || !username || !text) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
 
-  res.send(JSON.stringify(log));
+    const newLog = new Log({ courseId, username, text });
+    await newLog.save();
+
+    res.status(201).json(newLog);
+  } catch (error) {
+    console.error('Error creating log:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 module.exports = router;

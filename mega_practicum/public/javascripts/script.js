@@ -2,8 +2,9 @@
 
 'use strict';
 // Populate course selections
-const courseUrl = '/api/v1/courses';
+let courseUrl = '/api/v1/courses';
 const logUrl = '/api/v1/logs';
+const userRoll = '3';
 
 async function getUserRole() {
   try {
@@ -21,6 +22,7 @@ async function getUserRole() {
 
 document.addEventListener('DOMContentLoaded', () => {
   getUserRole().then(userRole => {
+    this.userRole = userRole;
     // showSectionsBasedOnRole(userRole);
     if (userRole === 1) { // Admin
       document.getElementById('aminTeacherSection').style.display = 'block';
@@ -28,6 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (userRole === 2) { // Teacher
       document.getElementById('aminTeacherSection').style.display = 'block';
       setupCreateStudentForm();
+      fetchStudentCourses();
+    } else {
+      setupStudenLogForm();
     }
   });
 });
@@ -193,7 +198,7 @@ function fetchCourses() {
 
 // Hide id field until a course has been selected
 function displayIdField() {
-  if (document.getElementById('course').value === 'Choose Courses') {
+  if (document.getElementById('course').value === 'Choose Courses' || userRole === 3) {
     document.getElementById('logUsername').style.display = 'none';
   } else {
     document.getElementById('logUsername').style.display = 'inline';
@@ -256,7 +261,7 @@ function checkLogs(username) {
   }
 }
 
-// Hide logs if clocked on and show logs if clicked again
+// Hide logs if clicked on and show logs if clicked again
 function hideLogs() {
   const logs = document.querySelectorAll('#logData');
   const hidden = document
@@ -273,7 +278,9 @@ function hideLogs() {
 
 // disable submit button until all forms are filled in
 function disableButton() {
-  if (
+  if (userRole === 3) {
+    document.getElementById('submit').disabled = false;
+  } else if (
     document.getElementById('uvuId').value.length < 8 ||
     document.getElementById('logTextArea').value === ''
   ) {
@@ -287,10 +294,8 @@ function disableButton() {
 function submitLog() {
   const data = {
     courseId:
-      document.getElementById('course').options[
-        document.getElementById('course').selectedIndex
-      ].id,
-    uvuId: document.getElementById('uvuId').value,
+      document.getElementById('course').value,
+    username: document.getElementById('logUsername').value,
     text: document.getElementById('logTextArea').value,
   };
   fetch(logUrl, {
@@ -310,10 +315,10 @@ function submitLog() {
       console.log('Success:', result);
       alert('Log submitted successfully!');
       document.getElementById('logTextArea').value = '';
-      checkLogs(document.getElementById('uvuId').value);
+      checkLogs(document.getElementById('logUsername').value);
     })
     .catch((error) => {
-      console.eror('Error:', error);
+      console.error('Error:', error);
     });
 }
 
@@ -399,3 +404,58 @@ function openTab(evt, tabName) {
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.tablinks').click();
 });
+
+async function fetchStudentCourses() {
+  try {
+    const response = await fetch('/api/v1/course/my');
+    if (!response.ok) {
+      throw new Error('Failed to fetch student courses');
+    }
+    const courses = await response.json();
+    const courseSelect = document.getElementById('course');
+    courseSelect.innerHTML = ''; // Clear existing options
+    courses.forEach(course => {
+      const option = document.createElement('option');
+      option.value = course._id;
+      option.textContent = course.display;
+      courseSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error fetching student courses:', error);
+  }
+}
+
+async function setupStudenLogForm() {
+  document.getElementById('logUsername').style.display = 'none';
+  document.getElementById('usernameLabel').style.display = 'none';
+  document.getElementById('usernameDisplay').textContent = 'Student Logs:';
+  document.getElementById('course').addEventListener('change', disableButton);
+  document.getElementById('logTextArea').addEventListener('input', disableButton);
+  const usernameResponse = await fetch('/users/me');
+  if (!usernameResponse.ok) {
+    throw new Error('Failed to fetch current user');
+  }
+  const userData = await usernameResponse.json();
+  document.getElementById('logUsername').value = userData.username;
+  try {
+    const response = await fetch('/api/v1/courses/my');
+    if (!response.ok) {
+      throw new Error('Failed to fetch student courses');
+    }
+    const courses = await response.json();
+    const courseSelect = document.getElementById('course');
+    courseSelect.innerHTML = ''; // Clear existing options
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Select a course';
+    courseSelect.appendChild(defaultOption);
+    courses.forEach(course => {
+      const option = document.createElement('option');
+      option.value = course.display;
+      option.textContent = course.display;
+      courseSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error fetching student courses:', error);
+  }
+}

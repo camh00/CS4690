@@ -53,7 +53,7 @@ body {
     display: none;
   }
   form {
-    margin: 0 20%;
+    /* margin: 0 20%; */
     padding: 2%;
     border: solid black;
     border-radius: 25px;
@@ -61,7 +61,7 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    justify-content: center;
+    /* justify-content: center; */
 
   }
   ul {
@@ -134,11 +134,12 @@ body {
 
 .tabcontent .left {
   width: 45%;
+  margin-right: 5%;
 }
 
 .tabcontent .right {
   width: 45%;
+  margin-left: 5%;
   display: flex;
   flex-direction: column;
-  align-self: center;
 }
