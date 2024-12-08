@@ -219,11 +219,8 @@ function checkLogs(username) {
   document.getElementById('usernameDisplay').textContent =
     'Student Logs for: ' + username;
   document.getElementById('logs').innerHTML = '';
-  const courseID =
-    document.getElementById('course').options[
-      document.getElementById('course').selectedIndex
-    ].id;
-  if (username.length == 8) {
+  const courseID = document.getElementById('course').value;
+  if (true) {
     fetch(logUrl + '?courseId=' + courseID + '&username=' + username)
       .then((response) => response.json())
       .then((logs) => {
@@ -454,6 +451,10 @@ async function setupStudenLogForm() {
       option.value = course.display;
       option.textContent = course.display;
       courseSelect.appendChild(option);
+    });
+
+    courseSelect.addEventListener('change', () => {
+      checkLogs(userData.username);
     });
   } catch (error) {
     console.error('Error fetching student courses:', error);

@@ -8,6 +8,8 @@ const passport = require('passport');
 const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
+const tenantMiddleware = require('./middleware/tenant');
+const checkSchool = require('./middleware/checkSchool');
 
 require('./routes/db.js');
 
@@ -17,6 +19,8 @@ var usersRouter = require('./routes/users');
 var coursesRouter = require('./routes/courses');
 var logsRouter = require('./routes/logs');
 var enrollRouter = require('./routes/enroll');
+const uvuRouter = require('./routes/uvu');
+const uofuRouter = require('./routes/uofu');
 
 var app = express();
 
@@ -79,6 +83,9 @@ app.use('/users', usersRouter);
 app.use('/api/v1/courses', coursesRouter);
 app.use('/api/v1/logs', logsRouter);
 app.use('/enroll', enrollRouter);
+app.use('/uvu', uvuRouter); // Apply checkSchool middleware
+app.use('/uofu', checkSchool, uofuRouter); // Apply checkSchool middleware
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

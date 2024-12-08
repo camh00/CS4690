@@ -132,11 +132,11 @@
 
       <input
         type="text"
-        oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'); checkLogs(value);"
+        onblur="checkLogs(value);"
         id="logUsername"
         name="logUsername"
         data-cy="logUsername_input"
-        onkeyup="checkInputField('username'); disableButton();"
+        onkeyup="checkLogs(value); checkInputField('value'); disableButton();"
         onclick="checkInputField('username');"
         maxlength="8"
         placeholder="12345678"

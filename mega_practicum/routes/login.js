@@ -30,19 +30,46 @@ router.get('/', function(req, res, next) {
 // });
 
 /* POST login data. */
-router.post('/', async function(req, res, next) { // Add `next` as an argument
+// router.post('/', async function(req, res, next) { // Add `next` as an argument
+//   try {
+//     // Check if the user exists
+//     const user = await User.findOne({ username: req.body.username });
+//     if (user) {
+//       // Check if password matches
+//       const result = await bcrypt.compare(req.body.password, user.password);
+//       if (result) {
+//         req.login(user, function(err) {
+//           if (err) {
+//             return next(err); // Use `next` to pass the error to the error handler
+//           }
+//           return res.redirect('/');
+//         });
+//       } else {
+//         res.status(400).json({ error: "Password doesn't match" });
+//       }
+//     } else {
+//       res.status(400).json({ error: "User doesn't exist" });
+//     }
+//   } catch (error) {
+//     res.status(400).json({ error });
+//   }
+// });
+
+router.post('/', async function(req, res, next) {
   try {
-    // Check if the user exists
     const user = await User.findOne({ username: req.body.username });
     if (user) {
-      // Check if password matches
       const result = await bcrypt.compare(req.body.password, user.password);
       if (result) {
         req.login(user, function(err) {
           if (err) {
-            return next(err); // Use `next` to pass the error to the error handler
+            return next(err);
           }
-          return res.redirect('/');
+          if (user.school === 'uvu') {
+            return res.redirect('/uvu');
+          } else if (user.school === 'uofu') {
+            return res.redirect('/uofu');
+          }
         });
       } else {
         res.status(400).json({ error: "Password doesn't match" });
