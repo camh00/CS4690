@@ -1,4 +1,3 @@
-/* light theme */
 body {
     background-color: white;
     color: black;
@@ -55,8 +54,8 @@ body {
   form {
     /* margin: 0 20%; */
     padding: 2%;
-    border: solid rgb(204, 0, 0);
-    background-color: grey;
+    border: solid rgb(130, 0, 0);
+    background-color: rgb(226, 230, 230);
     border-radius: 25px;
     display: flex;
     flex-direction: column;
@@ -72,9 +71,23 @@ body {
   }
   li {
     list-style-type: none;
-    border: 2px solid rgb(204, 0, 0);
+    border: 2px solid rgb(130, 0, 0);
+    background-color: white;
     border-radius: 10px;
     margin-bottom: 5%;
+    padding: 2%;
+  }
+  #userList, #courseList {
+    border: 2px solid rgb(130, 0, 0);
+    background-color: rgb(226, 230, 230);
+    border-radius: 25px;
+    padding: 2%;
+  }
+  #userList ul, #courseList ul {
+    border: none;
+  }
+  #userList h1, #courseList h1 {
+    text-align: center;
   }
   .newLog {
     text-align: center;
@@ -143,4 +156,8 @@ body {
   margin-left: 5%;
   display: flex;
   flex-direction: column;
+}
+
+#enrollStudentForm {
+  display: none;
 }

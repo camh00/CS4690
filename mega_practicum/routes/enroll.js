@@ -8,6 +8,8 @@ router.post('/', async function(req, res, next) {
 try {
     const { username, courseDisplay } = req.body;
     if (typeof username !== 'string' || typeof courseDisplay !== 'string') {
+        console.log(typeof username);
+        console.log(typeof courseDisplay);
         throw new Error('Invalid input');
     }
     const result = await db.enrollUserInCourse(username, courseDisplay);

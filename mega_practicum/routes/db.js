@@ -84,7 +84,7 @@ module.exports = class DBWrapper
     async getCourses() {
         try {
             // Fetch all courses from the database
-            const courses = await Course.find({}, 'display users').populate('users', 'username');
+            const courses = await Course.find({}, 'display id users').populate('users', 'username');
             return courses;
         } catch (err) {
             console.error('Error fetching courses:', err);
@@ -126,25 +126,6 @@ module.exports = class DBWrapper
             throw err;
         }
     }
-
-
-    /*
-    // option 2, using cursor
-    // note: you only need to use cursor or exec, but not both
-    async getLogs()
-    {
-        const logs = [];
-        const cursor = await LogModel.find().cursor();
-        for await (const log of cursor) {
-            // Process each document
-            console.log("db log:  " + log);
-            logs.push(log);
-        }
-
-        console.log("Logs:  " + logs);
-        return logs;
-    }
-    */
 
     async addLog(log)
     {

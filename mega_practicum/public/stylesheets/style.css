@@ -1,40 +1,56 @@
-/* TODO: make it look awesome. */
-/* TODO: make it responsive. */
 body {
-  background-color: rgb(56, 56, 56);
-  color: white;
+  font-family: 'Rajdhani', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  text-align: center;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-#uvuId {
-  display: none;
+h1, p {
+  margin-bottom: 1rem;
 }
-form {
+
+.login-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  justify-content: center;
+  border: solid black;
+  border-radius: 25px;
+  padding: 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 400px;
 }
 
-ul {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-}
-li {
-  list-style-type: none;
-  border: 2px solid white;
-  border-radius: 10px;
-  margin-bottom: 5%;
+.login-form label {
+  margin: 0.5rem 0;
 }
 
-p, small {
-  padding: 5px;
+.login-form input {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: solid black;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 300px;
 }
 
-.hidden {
-  display: none;
+.login-form button {
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #00B7FF;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-#courseName {
-  margin-bottom: 10px;
+.login-form button:hover {
+  background-color: #0095cc;
 }

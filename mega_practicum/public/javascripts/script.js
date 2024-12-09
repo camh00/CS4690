@@ -31,8 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('aminTeacherSection').style.display = 'block';
       setupCreateStudentForm();
       fetchStudentCourses();
-    } else {
+    } else { // Student
       setupStudenLogForm();
+      setupEnrollForm();
     }
   });
 });
@@ -66,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch((err) => console.log(err));
 });
 
+// Enroll user in course
 document.addEventListener('DOMContentLoaded', () => {
   const enrollUserForm = document.getElementById('enrollUserForm');
 
@@ -146,6 +148,7 @@ function setupCreateUserForm() {
   });
 }
 
+// Add Student
 function setupCreateStudentForm() {
   document.getElementById('userCreationTitle').textContent = 'Create a Student';
   document.getElementById('roleSelection').style.display = 'none';
@@ -155,7 +158,7 @@ function setupCreateStudentForm() {
 
     const username = document.getElementById('newUsername').value;
     const password = document.getElementById('password').value;
-    const role = 3; // Force role to student
+    const role = 3;
     const school = document.querySelector('head > title').textContent;
 
     try {
@@ -214,7 +217,7 @@ function checkInputField(id) {
   }
 }
 
-// search for logs from selected course and uvu id
+// search for logs from selected course and username
 function checkLogs(username) {
   document.getElementById('usernameDisplay').textContent =
     'Student Logs for: ' + username;
@@ -371,28 +374,21 @@ function addCourse() {
     });
 }
 fetchCourses();
-// Add event listener to the button
 document.addEventListener('DOMContentLoaded', (event) => {
   document.getElementById('addCourse').addEventListener('click', addCourse);
 });
 
+// Tab functionality
 function openTab(evt, tabName) {
-  // Declare all variables
   var i, tabcontent, tablinks;
-
-  // Get all elements with class="tabcontent" and hide them
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
       tabcontent[i].style.display = "none";
   }
-
-  // Get all elements with class="tablinks" and remove the class "active"
   tablinks = document.getElementsByClassName("tablinks");
   for (i = 0; i < tablinks.length; i++) {
       tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
-
-  // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(tabName).style.display = "flex";
   evt.currentTarget.className += " active";
 }
@@ -422,6 +418,7 @@ async function fetchStudentCourses() {
   }
 }
 
+// Set up the student log form
 async function setupStudenLogForm() {
   document.getElementById('logUsername').style.display = 'none';
   document.getElementById('usernameLabel').style.display = 'none';
@@ -459,4 +456,65 @@ async function setupStudenLogForm() {
   } catch (error) {
     console.error('Error fetching student courses:', error);
   }
+}
+
+// Enroll in a course for students
+async function setupEnrollForm() {
+  const enrollForm = document.getElementById('enrollStudentForm');
+  enrollForm.style.display = 'block';
+  const enrollCourseSelect = document.getElementById('enrollCourse');
+  let currentUsername = '';
+
+  try {
+    const usernameResponse = await fetch('/users/me');
+    if (!usernameResponse.ok) {
+      throw new Error('Failed to fetch current user');
+    }
+    const userData = await usernameResponse.json();
+    currentUsername = userData.username;
+
+    const response = await fetch('/api/v1/courses');
+    if (!response.ok) {
+      throw new Error('Failed to fetch available courses');
+    }
+    const courses = await response.json();
+    courses.forEach(course => {
+      const option = document.createElement('option');
+      option.value = course.display;
+      option.textContent = course.display;
+      enrollCourseSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error fetching available courses:', error);
+  }
+
+  enrollForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const selectedCourseId = enrollCourseSelect.value;
+    if (!selectedCourseId) {
+      alert('Please select a course to enroll in.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/enroll', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: currentUsername, courseDisplay: selectedCourseId }),
+      });
+
+      if (response.ok) {
+        alert('Enrolled in course successfully!');
+        location.reload();
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error('Error enrolling in course:', error);
+      alert('Error enrolling in course. Please try again later.');
+    }
+  });
 }

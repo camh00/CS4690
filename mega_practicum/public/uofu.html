@@ -9,7 +9,7 @@
     <link
       rel="icon"
       type="image/x-icon"
-      href="https://www.uvu.edu/favicon.ico"
+      href="images/BlockU_redweb.png"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,8 +23,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
-    <H1>Note this is U of U page.</H1>
-    <img id="uvuLogo" src="/images/UVUSquareWhite-0003.png" />
+    <img id="uvuLogo" src="/images/universityofutah-logo-1.png" />
 
     <div id="aminTeacherSection">
     <!-- Tab navigation -->
@@ -167,6 +166,14 @@
       </button>
       <br>
       
+    </form>
+    <form id="enrollStudentForm">
+      <h1>Enroll in Course</h1>
+      <label for="enrollCourse">Select Course:</label><br />
+      <select id="enrollCourse" name="enrollCourse" required>
+          <option value="">Select a course</option>
+      </select><br />
+      <button type="submit">Enroll</button>
     </form>
   </body>
   <noscript>
